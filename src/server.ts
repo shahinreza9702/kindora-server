@@ -3,8 +3,10 @@ import "dotenv/config";
 
 import express from "express";
 import cors from "cors";
+import { toNodeHandler } from "better-auth/node";
 
 import { connectDatabase } from "./config/database.js";
+import { auth } from "./lib/auth.js";
 
 const app = express();
 
@@ -17,9 +19,13 @@ app.use(
   })
 );
 
+// Better Auth handler must come before express.json()
+app.all("/api/auth/{*any}", toNodeHandler(auth));
+
+// Body parser for other API routes
 app.use(express.json());
 
-// Health Check Route
+// Health Check
 app.get("/api/health", (_req, res) => {
   res.status(200).json({
     success: true,
