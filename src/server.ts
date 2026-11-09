@@ -7,6 +7,7 @@ import { toNodeHandler } from "better-auth/node";
 
 import { connectDatabase } from "./config/database.js";
 import { auth } from "./lib/auth.js";
+import { verifyJWT } from "./middleware/verify-jwt.js";
 
 const app = express();
 
@@ -30,6 +31,15 @@ app.get("/api/health", (_req, res) => {
   res.status(200).json({
     success: true,
     message: "Kindora API is running.",
+  });
+});
+
+// Protected JWT Test Route
+app.get("/api/protected/test", verifyJWT, (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "JWT authentication successful.",
+    user: req.user,
   });
 });
 
