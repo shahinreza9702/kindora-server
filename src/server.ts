@@ -9,6 +9,7 @@ import { connectDatabase } from "./config/database.js";
 import { auth } from "./lib/auth.js";
 import { verifyJWT } from "./middleware/verify-jwt.js";
 import eventRoutes from "./routes/event.routes.js";
+import eventParticipantRoutes from "./routes/event-participant.routes.js";
 
 const app = express();
 
@@ -37,6 +38,9 @@ app.get("/api/health", (_req, res) => {
 
 // Event API Routes
 app.use("/api/events", eventRoutes);
+
+// Event Participant API Routes
+app.use("/api/event-participants", eventParticipantRoutes);
 
 // Protected JWT Test Route
 app.get("/api/protected/test", verifyJWT, (req, res) => {

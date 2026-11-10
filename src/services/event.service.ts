@@ -82,15 +82,30 @@ export async function updateEventById(
 }
 
 // Delete Event
+
 export async function deleteEventById(id: string) {
   if (!ObjectId.isValid(id)) {
     return null;
   }
 
-  return eventCollection.findOneAndDelete({
-    _id: new ObjectId(id),
+  const eventId = new ObjectId(id);
+
+  const deletedEvent = await eventCollection.findOneAndDelete({
+    _id: eventId,
   });
+
+  if (deletedEvent) {
+    const participantCollection =
+      database.collection("eventParticipants");
+
+    await participantCollection.deleteMany({
+      eventId,
+    });
+  }
+
+  return deletedEvent;
 }
+
 
 
 // Get Events Created by a Specific User
