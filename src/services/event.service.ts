@@ -84,6 +84,7 @@ export async function updateEventById(
 }
 
 // Delete Event
+
 export async function deleteEventById(
   id: string,
   userId: string
@@ -122,6 +123,7 @@ export async function deleteEventById(
     await session.endSession();
   }
 }
+
 
 // Get Events Created by a Specific User
 export async function getEventsByCreator(userId: string) {
