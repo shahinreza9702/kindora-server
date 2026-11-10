@@ -9,6 +9,8 @@ export const database = mongoClient.db(env.MONGODB_DB);
 
 let connectionPromise: Promise<void> | null = null;
 
+let connectionPromise: Promise<void> | null = null;
+
 export async function connectDatabase() {
   if (!connectionPromise) {
     connectionPromise = (async () => {
