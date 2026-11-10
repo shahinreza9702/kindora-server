@@ -92,6 +92,7 @@ const errorHandler: ErrorRequestHandler = (
 ) => {
   console.error("API Error:", error);
 
+  // Invalid JSON
   if (error instanceof SyntaxError && "body" in error) {
     res.status(400).json({
       success: false,
@@ -100,6 +101,7 @@ const errorHandler: ErrorRequestHandler = (
     return;
   }
 
+  // Request body too large
   const errorType =
     typeof error === "object" &&
     error !== null &&
