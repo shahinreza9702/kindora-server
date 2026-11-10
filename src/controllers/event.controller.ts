@@ -204,7 +204,10 @@ export async function handleDeleteEvent(
       });
     }
 
-    await deleteEventById(req.params.id as string);
+    await deleteEventById(
+      req.params.id as string,
+      req.user.id
+    );
 
     return res.status(200).json({
       success: true,
