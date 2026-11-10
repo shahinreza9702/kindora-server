@@ -91,3 +91,17 @@ export async function deleteEventById(id: string) {
     _id: new ObjectId(id),
   });
 }
+
+
+// Get Events Created by a Specific User
+export async function getEventsByCreator(userId: string) {
+  return eventCollection
+    .find({
+      createdBy: userId,
+    })
+    .sort({
+      createdAt: -1,
+    })
+    .toArray();
+}
+

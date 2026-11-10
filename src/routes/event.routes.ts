@@ -9,6 +9,7 @@ import {
   handleGetEventById,
   handleUpdateEvent,
   handleDeleteEvent,
+  handleGetMyEvents,
 } from "../controllers/event.controller.js";
 
 const router = Router();
@@ -18,6 +19,8 @@ router.get("/", handleGetUpcomingEvents);
 router.get("/:id", handleGetEventById);
 
 // Protected Routes
+router.get("/my-events", verifyJWT, handleGetMyEvents);
+
 router.post("/", verifyJWT, handleCreateEvent);
 router.patch("/:id", verifyJWT, handleUpdateEvent);
 router.delete("/:id", verifyJWT, handleDeleteEvent);

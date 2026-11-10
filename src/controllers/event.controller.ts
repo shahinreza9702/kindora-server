@@ -7,6 +7,7 @@ import {
   getEventById,
   updateEventById,
   deleteEventById,
+  getEventsByCreator,
 } from "../services/event.service.js";
 
 import {
@@ -218,3 +219,36 @@ export async function handleDeleteEvent(
     });
   }
 }
+
+
+
+// Get Events Created by Logged-in User
+export async function handleGetMyEvents(
+  req: Request,
+  res: Response
+) {
+  try {
+    if (!req.user?.id) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required.",
+      });
+    }
+
+    const events = await getEventsByCreator(req.user.id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Your events fetched successfully.",
+      data: events,
+    });
+  } catch (error) {
+    console.error("Get my events error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch your events.",
+    });
+  }
+}
+
