@@ -16,12 +16,15 @@ const router = Router();
 
 // Public Routes
 router.get("/", handleGetUpcomingEvents);
-router.get("/:id", handleGetEventById);
 
 // Protected Routes
+// Specific routes must come before dynamic :id routes.
 router.get("/my-events", verifyJWT, handleGetMyEvents);
 
 router.post("/", verifyJWT, handleCreateEvent);
+
+// Dynamic Routes
+router.get("/:id", handleGetEventById);
 router.patch("/:id", verifyJWT, handleUpdateEvent);
 router.delete("/:id", verifyJWT, handleDeleteEvent);
 
