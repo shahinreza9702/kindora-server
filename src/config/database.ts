@@ -1,26 +1,26 @@
 
 import { MongoClient } from "mongodb";
 
-const mongoUri = process.env.MONGODB_URI;
-const databaseName = process.env.MONGODB_DB;
+import { env } from "./env.js";
 
-if (!mongoUri) {
-  throw new Error("MONGODB_URI is not defined in environment variables.");
-}
+export const mongoClient = new MongoClient(env.MONGODB_URI);
 
-if (!databaseName) {
-  throw new Error("MONGODB_DB is not defined in environment variables.");
-}
+export const database = mongoClient.db(env.MONGODB_DB);
 
-export const mongoClient = new MongoClient(mongoUri);
-
-export const database = mongoClient.db(databaseName);
+let connectionPromise: Promise<void> | null = null;
 
 export async function connectDatabase() {
-  await mongoClient.connect();
+  if (!connectionPromise) {
+    connectionPromise = (async () => {
+      await mongoClient.connect();
+      await database.command({ ping: 1 });
 
-  // Verify that MongoDB is reachable.
-  await database.command({ ping: 1 });
+      console.log("MongoDB connected successfully.");
+    })().catch((error) => {
+      connectionPromise = null;
+      throw error;
+    });
+  }
 
-  console.log("MongoDB connected successfully.");
+  return connectionPromise;
 }
