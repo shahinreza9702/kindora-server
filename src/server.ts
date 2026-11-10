@@ -8,6 +8,7 @@ import { toNodeHandler } from "better-auth/node";
 import { connectDatabase } from "./config/database.js";
 import { auth } from "./lib/auth.js";
 import { verifyJWT } from "./middleware/verify-jwt.js";
+import eventRoutes from "./routes/event.routes.js";
 
 const app = express();
 
@@ -33,6 +34,9 @@ app.get("/api/health", (_req, res) => {
     message: "Kindora API is running.",
   });
 });
+
+// Event API Routes
+app.use("/api/events", eventRoutes);
 
 // Protected JWT Test Route
 app.get("/api/protected/test", verifyJWT, (req, res) => {
