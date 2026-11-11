@@ -29,7 +29,7 @@ app.use(
 // CORS Configuration
 app.use(
   cors({
-    origin: env.CLIENT_URL,
+    origin: [env.CLIENT_URL, "http://localhost:3001"],
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
